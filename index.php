@@ -13,10 +13,10 @@ Loader::init();
 /* Set timezone */
 date_default_timezone_set(Settings::get('TIMEZONE'));
 
-/* Get request */
+/* Get the request */
 $request = $_SERVER['REQUEST_URI'];
 
-/* Route matchiung */
+/* Route matching */
 $target = (new Router)->load($request);
 
 /* Prepare method call */
