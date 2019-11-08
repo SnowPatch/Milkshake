@@ -149,7 +149,7 @@ class Controller {
 	
 	public function render($path, $data = false) {
 		
-		$file = str_replace('/', '.', $path);
+		$path = str_replace('.', '/', $path);
 		$file = 'view/' . $path . '.html';
 		
 		if (!is_file($file)) {
