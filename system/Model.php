@@ -13,11 +13,7 @@ class Model {
 		
 		$this->charset = Settings::get('CHARSET') ?? "utf8";
 		
-		if (
-		strlen(Settings::get('DB_HOST')) > 0 &&
-		strlen(Settings::get('DB_USER')) > 0 &&
-		strlen(Settings::get('DB_NAME')) > 0
-		) {
+		if (strlen(Settings::get('DB_HOST')) > 0 && strlen(Settings::get('DB_USER')) > 0 &&strlen(Settings::get('DB_NAME')) > 0) {
 			
 			$this->db = new \mysqli(
 				Settings::get('DB_HOST'), 
@@ -96,11 +92,7 @@ class Model {
 			die('Something went wrong (DB.Select.Exec Error)'); // $stmt->error
 		} 
 		
-		if ($return) {
-			$result = $stmt->get_result();
-		} else {
-			$result = true;
-		}
+		$result = ($return) ? $stmt->get_result() : true;
 		
 		$stmt->close();
 		
@@ -112,18 +104,10 @@ class Model {
 		
 		$type = explode(' ', $sql);
 		$type = strtolower($type[0]);
+		$return = ($type === 'select') ? true : false;
 		
-		if ($type === 'select') {
-			
-			$result = $this->execute($sql, $params, true);
-			return $result->fetch_all();
-			
-		} else {
-			
-			$result = $this->execute($sql, $params);
-			return $result;
-			
-		}
+		$result = $this->execute($sql, $params, $return);
+		return ($return) ? $result->fetch_all() : $result;
 		
 	}
 	
