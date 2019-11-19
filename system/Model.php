@@ -42,7 +42,7 @@ class Model {
 		$numPh = substr_count($sql, '?');
 		
 		/* Equal amount of params */
-		if($params && count($params) === $numPh) {
+		if ($params && count($params) === $numPh) {
 			
 			$types = "";
 			
@@ -62,7 +62,7 @@ class Model {
 			}
 			
 			/* Bind all params */
-			if($stmt->bind_param($types, ...$params)) {
+			if ($stmt->bind_param($types, ...$params)) {
 				return true;
 			} else {
 				return false;
@@ -82,10 +82,12 @@ class Model {
 			die('Something went wrong (DB.Select.Prepare Error)'); 
 		}
 		
-		// Bind params
-		if(!($this->bind($sql, $stmt, $params))) { 
-			die('Something went wrong (DB.Select.Bind Error)'); 
-		} 
+		// Bind params if set
+		if ($params) {
+			if (!($this->bind($sql, $stmt, $params))) { 
+				die('Something went wrong (DB.Select.Bind Error)'); 
+			} 
+		}
 		
 		/* Execute */
 		if (!$stmt->execute()) { 
