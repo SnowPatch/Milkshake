@@ -109,7 +109,20 @@ class Model {
 		$return = ($type === 'select') ? true : false;
 		
 		$result = $this->execute($sql, $params, $return);
-		return ($return) ? $result->fetch_assoc() : $result;
+		
+		if ($return) {
+			
+			$array = [];
+			while ($row = $result->fetch_assoc()) {
+			  array_push($array, $row);
+			}
+			return $array;
+			
+		} else {
+			
+			return $result;
+			
+		}
 		
 	}
 	
