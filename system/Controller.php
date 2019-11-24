@@ -28,7 +28,7 @@ class Controller {
 			'/}}/', 
 			
 			/* Echo escaped */
-			'/@echo \$(\w+)/i',
+			'/@echo \$([a-zA-Z0-9_\'\"\[\]]+)/i',
 			'/@echo \((.+)\)/i',
 			'/@echo\((.+)\)/i', // no whitespace
 			
@@ -47,12 +47,12 @@ class Controller {
 			'/@else/i',
 			
 			/* Isset */
-			'/@isset \$(\w+)/i',
+			'/@isset \$([a-zA-Z0-9_\'\"\[\]]+)/i',
 			'/@isset \((.+)\)/i',
 			'/@isset\((.+)\)/i', // no whitespace
 			
 			/* Empty */
-			'/@empty \$(\w+)/i',
+			'/@empty \$([a-zA-Z0-9_\'\"\[\]]+)/i',
 			'/@empty \((.+)\)/i',
 			'/@empty\((.+)\)/i', // no whitespace
 			
@@ -106,14 +106,14 @@ class Controller {
 			'<?php } else { ?>',
 			
 			/* Isset */
-			'<?php if (isset(\$$1)) {',
-			'<?php if (isset($1)) {',
-			'<?php if (isset($1)) {',
+			'<?php if (isset(\$$1)) { ?>',
+			'<?php if (isset($1)) { ?>',
+			'<?php if (isset($1)) { ?>',
 			
 			/* Empty */
-			'<?php if (empty(\$$1)) {',
-			'<?php if (empty($1)) {',
-			'<?php if (empty($1)) {',
+			'<?php if (empty(\$$1)) { ?>',
+			'<?php if (empty($1)) { ?>',
+			'<?php if (empty($1)) { ?>',
 			
 			/* For loop */
 			'<?php for ($1) { ?>',
