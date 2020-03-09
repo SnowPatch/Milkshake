@@ -3,11 +3,11 @@
 namespace Milkshake\Core; 
 
 class Loader {
-	
+
 	private static $locations = [
-		"system", 
-		"model", 
-		"controller", 
+		'system', 
+		'model', 
+		'controller', 
 	];
 	
 	private static function autoload($dir) {
@@ -32,12 +32,16 @@ class Loader {
 	
 	public static function init() {
 		
+		/* Load first */
+		require_once 'system/Milkshake.php';
+		require_once 'system/Router.php';
+
+		/* Autoload from folders */
 		foreach (Loader::$locations as $dir) {
-		
 			Loader::autoload($dir);
-			
 		}
-		
+
+		/* Loadd config files */
 		require_once 'routes.php';
 		require_once 'config.php';
 		

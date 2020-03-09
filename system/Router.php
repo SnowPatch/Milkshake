@@ -5,82 +5,40 @@ namespace Milkshake\Core;
 class Router {
 
 	private static $routes = [];
-	private static $redirect = "PATH";
-	
-	private function methods($method) {
-		
-		$methods = [];
-		$break = explode(",", $method);
-		
-		foreach($break as $val) {
-			$methods[] = trim(strtoupper($val));
-		}
-		
-		return array_filter($methods);
-		
-	}
 	
 	public static function set($method, $request, $action) {
-		
-		/* Validate method */
-		if (!count(array_intersect((new self)->methods($method), ["GET", "POST", "DELETE", "UPDATE", Router::$redirect]))) {
-			die('Something went wrong (Route.Method Error)');
-		}
 		
 		/* Validate request route */
 		if (strpos($request, '/') === false) {
 			die('Something went wrong (Route.Route Error)');
 		}
 		
-		if ($method === Router::$redirect) {
+		if ($method === "PATH") {
 			
 			/* Validate redirect target */
 			if (strpos($action, '/') === false) {
-				die('Something went wrong (Route.Target.Path Error)');
+				die('Something went wrong (Route.Redirect.Target Error)');
 			}
 			
 		} else {
 			
 			/* Validate request target */
-			if (strpos($action, '.') === false) {
+			if (!is_callable($action) && strpos($action, '.') === false) {
 				die('Something went wrong (Route.Target Error)');
 			}
 			
 		}
 		
 		/* Save route */
-		Router::$routes[$request] = $method.".".$action;
+		Router::$routes[$request] = [
+			'method' => $method,
+			'action' => $action, 
+		];
 		
 	}
-	
-	
-	private function cut($action) {
-		
-		$parts = explode(".", $action);
-		
-		$result = [];
-		$result['method'] = $parts[0];
-		
-		if ($result['method'] === Router::$redirect) {
-			
-			$result['target'] = $parts[1];
-			
-			return $result;
-			
-		} else {
-			
-			$result['controller'] = $parts[1];
-			$result['function'] = $parts[2];
-			
-			return $result;
 
-		}
-			
-	}
-	
-	
-	private function match($request, $routes) {
-		
+	private static function match($request, $routes) {
+
 		$matches = 0;
 		$match_arr = [];
 		
@@ -89,21 +47,18 @@ class Router {
 			/* Exact match for route */
 			if($request == $key) {
 				
-				$target = $this->cut($value);
-				
-				if($target['method'] === Router::$redirect) {
+				if($value['method'] === "PATH") {
 					
-					header('Location: '.$target['target']);
-					die;
+					header('Location: '.$value['action']); die();
 					
 				} else {
 					
 					/* Validate method */
-					if (!in_array($_SERVER['REQUEST_METHOD'], $this->methods($target['method']))) {
+					if (!in_array($_SERVER['REQUEST_METHOD'], explode(',', $value['method']))) {
 						die('Something went wrong (Request.Method Error)');
 					}
 					
-					return $target;
+					return $value;
 					
 				}
 				
@@ -129,12 +84,11 @@ class Router {
 			/* Get match with highest percentage */
 			$highest = array_search(max($match_arr), $match_arr);
 			
-			/* Target corresponding original oroute */
-			$original = $routes[$highest];
-			$target = $this->cut($original);
+			/* Target corresponding original route */
+			$target = $routes[$highest];
 			
 			/* Validate method */
-			if (!in_array($_SERVER['REQUEST_METHOD'], $this->methods($target['method']))) {
+			if (!in_array($_SERVER['REQUEST_METHOD'], explode(',', $target['method']))) {
 				die('Something went wrong (Request.Method Error)');
 			}
 			
@@ -165,19 +119,14 @@ class Router {
 		
 		/* No match found for supplied route */
 		die('Something went wrong (Unknown Route)');
-		
+
 	}
 	
-	
-	public function load($request) {
-		
-		$request = trim(strtolower($request));
-		
-		$target = $this->match($request, Router::$routes);
-		
-		return $target;
+	public static function load($request) {
+
+		return Router::match(trim($request), Router::$routes);
 		/*return Router::$routes;*/
-		
+
 	}
 	
 }

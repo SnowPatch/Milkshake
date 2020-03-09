@@ -23,10 +23,7 @@ class Model {
 			);
 
 			if ($this->db->connect_error) {
-				
-				//die('Error: Could not establish database connection (' . $this->db->connect_errno . ') ' . $this->db->connect_error);
-				die('Something went wrong (DB.Connect Error)');
-				
+				die('Something went wrong (DB.Connect Error)'); 
 			} 
 				
 			$this->db->set_charset($this->charset);
@@ -78,7 +75,7 @@ class Model {
 	private function execute($sql, $params, $return = false) {
 		
 		/* Prepare */
-		if(!($stmt = $this->db->prepare($sql))) { 
+		if (!($stmt = $this->db->prepare($sql))) { 
 			die('Something went wrong (DB.Select.Prepare Error)'); 
 		}
 		

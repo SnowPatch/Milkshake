@@ -1,5 +1,9 @@
 <?php
 
+/* Only show warnings and errors */
+// ini_set('error_reporting', 'E_ERROR | E_WARNING');
+// ini_set('display_errors', '1');
+
 require_once 'system/Loader.php';
 
 use Milkshake\Core\Loader;
@@ -11,23 +15,28 @@ use Milkshake\Controller;
 Loader::init();
 
 /* Set timezone */
-date_default_timezone_set(Settings::get('TIMEZONE'));
-
-/* Get the request */
-$request = $_SERVER['REQUEST_URI'];
+$timezone = Settings::get('TIMEZONE') ?? 'Europe/Berlin';
+date_default_timezone_set($timezone);
 
 /* Route matching */
-$target = (new Router)->load($request);
+$target = Router::load($_SERVER['REQUEST_URI']);
+$data = (isset($target['data'])) ? $target['data'] : NULL;
 
-/* Prepare method call */
-$class = 'Milkshake\Controller\\'.$target['controller'];
-$method = $target['function'];
+if (is_callable($target['action'])) {
 
-/* Return result */
-if (isset($target['data'])) {
-	echo (new $class())->$method($target['data']);
+	/* Execute route method function */
+	$target['action']($data);
+
 } else {
-	echo (new $class())->$method();
+
+	/* Prepare controller.method call */
+	$path = explode(".", $target['action']);
+	$class = 'Milkshake\Controller\\'.$path[0];
+	$method = $path[1];
+
+	/* Return result */
+	echo (new $class())->$method($data);
+
 }
 
 ?>

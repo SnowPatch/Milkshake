@@ -13,9 +13,15 @@ use Milkshake\Core\Router;
 * 
 * Use the following format to create redirect routes:
 * Router::set('PATH', From, To);
+* 
+* Note: The method parameter also supports functions
 *
 **/
 
-Router::set('GET', '/', 'MainController.Index');
+Router::set('GET', '/', 'MainController.index');
+
+Router::set('GET', '/phpinfo', function() { 
+    phpinfo(); 
+});
 
 ?>

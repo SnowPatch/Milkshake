@@ -12,11 +12,11 @@ use Milkshake\Settings;
 **/
 
 Settings::set('TIMEZONE', 'Europe/Copenhagen');
-Settings::set('CHARSET', 'utf8');
 
 Settings::set('DB_HOST', '');
 Settings::set('DB_USER', '');
 Settings::set('DB_PASS', '');
 Settings::set('DB_NAME', '');
+Settings::set('DB_CHARSET', 'utf8');
 
 ?>

@@ -3,21 +3,18 @@
 namespace Milkshake\Controller;
 
 use Milkshake\Core\Controller;
-use Milkshake\Model\MainModel;
 
 class MainController extends Controller {
 
-	public function Index() {
+	public function index() {
+
+		$data = [
+			'title' => 'Milkshake Framework',
+		];
+
+		return $this->render('main.index', $data);
 		
-		$model = new MainModel;
-		
-		$data = array(
-		  'data' => $model->Index()
-		);
-		
-		return $this->render('index', $data);
-		
-	}
+    }
 	
 }
 
