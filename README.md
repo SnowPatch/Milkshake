@@ -50,7 +50,7 @@ To create a redirect, use `'PATH'` as the **Method**, and specify the From-URI i
 ##### `#` File structure 
 
 Milkshake utilizes the MVC development architecture, which means that Models, Views and Controllers are separated into folders of their own. 
-- **Models**: Found in the `model/` folder. This is the parth of your application which interfaces with data. 
+- **Models**: Found in the `model/` folder. This is the part of your application which interfaces with data. 
 - **Views**: Found in the `view/` folder. The visual part of your application, rendered through the controller. 
 - **Controllers**: Found in the `controller/` folder. The backbone of the system, chaining data and visuals together. 
 <br/>
