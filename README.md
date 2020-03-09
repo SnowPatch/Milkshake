@@ -1,6 +1,6 @@
 # Milkshake
 
-[![Milkshake](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Netclear/Milkshake)
+[![Milkshake](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/SnowPatch/Milkshake)
 
 <br/>
 
@@ -21,7 +21,7 @@ Milkshake is a simple open-source PHP framework with core features such as:
 ##### `#` Config 
 
 The first time you fire up a Milkshake application, your first order of business is to look at the application settings, found in the `config.php` file. 
-Some settings are already specified, such as timezone and database settings, since theese are used by the system per default. They *can* technically be removed, however we advise that you **leave them be**. 
+Some settings are already specified, such as timezone and database settings, since these are used by the system per default. They *can* technically be removed, however we advise that you **leave them be**. 
 #####
 Feel free to add as many new settings as you please - just use the following format:
 ```
