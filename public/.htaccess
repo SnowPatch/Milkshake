@@ -1,0 +1,8 @@
+RewriteEngine on
+
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+RewriteCond {REQUEST_URI} !\.(png|gif|jpg|jpeg|svg|mp3|mp4)$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ app.php?_uri=/$1&_host=%{HTTP_HOST} [QSA]

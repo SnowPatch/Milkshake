@@ -1,0 +1,27 @@
+{
+  "name": "milkshake",
+  "version": "0.1.2",
+  "description": "Lightweight PHP framweork",
+  "license": "AGPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SnowPatch/Milkshake"
+  },
+  "scripts": {
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "npm run development -- --watch",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.3"
+  },
+  "devDependencies": {
+    "laravel-mix": "^6.0.19",
+    "postcss": "^8.2.15",
+    "resolve-url-loader": "^4.0.0",
+    "sass": "^1.32.13",
+    "sass-loader": "^11.1.1"
+  }
+}

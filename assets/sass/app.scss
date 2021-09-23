@@ -1,0 +1,22 @@
+@use 'abstracts/fonts' as fonts;
+@use 'abstracts/colors' as color;
+@use 'abstracts/screen' as screen;
+@use 'abstracts/mixins' as *;
+
+body {
+  background: color.$background;
+} 
+
+.headline {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: calc(10vh + 50px);
+
+  h1 {
+    font-family: fonts.$primary;
+    font-weight: 300;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+  }
+}
