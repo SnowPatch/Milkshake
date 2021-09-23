@@ -41,7 +41,7 @@ class Router {
 			throw new \Exception('Invalid route defined (Route.Route Error)');
 		}
 		
-		if (!is_callable($target) && preg_match('/[^A-Za-z.]/', $target) !== 0 && !isURL($target)) {
+		if (!is_callable($target) && preg_match('/[^A-Za-z.]/', $target) !== 0 && !self::isURL($target)) {
 			throw new \Exception('Invalid route target defined (Route.Target Error)');
 		}
 		
@@ -79,8 +79,7 @@ class Router {
 				}
 			}
 
-			var_dump($target);
-			//header('Location: '.$target); 
+			header('Location: '.$target); 
 			exit;
 
 		}
