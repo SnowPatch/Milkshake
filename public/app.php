@@ -15,4 +15,10 @@ require_once '../system/Loader.php';
 Loader::load();
 DotEnv::load();
 
-Router::run();
+try {
+
+  Router::run();
+
+} catch(Exception $e) {
+  echo $e->getMessage();
+}
