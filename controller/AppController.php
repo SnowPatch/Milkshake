@@ -4,9 +4,11 @@ namespace Milkshake\Controller;
 
 use Milkshake\Controller;
 
-class AppController extends Controller {
+class AppController extends Controller 
+{
 
-	public function index() {
+	public function index() 
+	{
 
 		$data = [
 			'text' => 'Milkshake Framework',

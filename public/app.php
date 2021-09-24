@@ -8,13 +8,14 @@ use Milkshake\Router;
 session_start();
 require_once '../system/Loader.php';
 
-Loader::load();
-DotEnv::load();
-
 try {
 
-  Router::run();
+    Loader::init();
+    DotEnv::init();
+    Router::init();
 
 } catch(Exception $e) {
-  echo $e->getMessage();
+
+    echo $e->getMessage();
+
 }

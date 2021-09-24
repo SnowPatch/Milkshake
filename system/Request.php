@@ -4,28 +4,34 @@ namespace Milkshake;
 
 use Milkshake\Csrf;
 
-class Request {
+class Request 
+{
 
-	function csrf() {
+	function csrf(): Csrf 
+	{
 		return new Csrf;
 	}
 
-	public function path() {
+	public function path(): string 
+	{
 		return trim($_GET['_uri']);
 	}
 
-  public function url() {
+  	public function url(): string 
+  	{
 
-    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+    	$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
 		return $protocol.'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 
 	}
 
-  public function method() {
+  	public function method(): string 
+	  {
 		return strtoupper($_SERVER['REQUEST_METHOD']);
 	}
 
-  public function get($key = false, $default = '') {
+  	public function get(string $key = '', string $default = '') 
+	{
 
 		if ($key) {
 
@@ -50,7 +56,8 @@ class Request {
 
 	}
 
-  public function is($method) {
+  	public function is($method): bool 
+	{
 		return ($this->method() === strtoupper($method));
 	}
 	

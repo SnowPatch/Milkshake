@@ -4,44 +4,52 @@ namespace Milkshake;
 
 use Milkshake\View;
 
-class Router {
+class Router 
+{
 
-	private static 
-		$routes = [], 
-		$params;
+	private static $routes;
+	private static $params;
 
-	public function name($name) {
-		self::$routes[count(self::$routes)-1]['name'] = $name;
+	public function name(string $name): void
+	{
+
+		$latest = count(self::$routes) - 1;
+		self::$routes[$latest]['name'] = $name;
+
 	}
 
-	public static function find($name, $params = []) {
+	public static function find(string $name, array $params = []): string
+	{
 
 		$key = array_search($name, array_column(self::$routes, 'name'));
-		if ($key === false) { return ''; }
+
+		if ($key === false) { 
+			return ''; 
+		}
 
 		$route = self::$routes[$key]['request'] ?? '';
 
-		if ($route) {
-			foreach ($params as $key => $param) {
-				$route = str_replace('{'.$key.'}', $param, $route);
-			}
+		foreach ($params as $key => $param) {
+			$route = str_replace('{'.$key.'}', $param, $route);
 		}
 
 		return $route;
 		
 	}
 
-	public static function isURL($url) {
-		return (strpos($url, 'http') === 0 || strpos($url, 'www') === 0 || strpos($url, '/') === 0);
+	public static function isRouteOrURL($url): bool
+	{
+		return (is_string($url) && strpos($url, '/') === 0);
 	}
 
-	public static function add($method, $request, $target) {
-		
+	public static function add(string $method, string $request, $target): Router
+	{
+
 		if (substr($request, 0, 1) !== '/') {
 			throw new \Exception('Invalid route defined (Route.Route Error)');
 		}
 		
-		if (!is_callable($target) && preg_match('/[^A-Za-z.]/', $target) !== 0 && !self::isURL($target)) {
+		if (!is_callable($target) && preg_match('/[^A-Za-z.]/', $target) !== 0 && !self::isRouteOrURL($target)) {
 			throw new \Exception('Invalid route target defined (Route.Target Error)');
 		}
 		
@@ -56,21 +64,25 @@ class Router {
 		
 	}
 
-	public static function redirect($request, $target) {
+	public static function redirect(string $request, $target): Router 
+	{
 		return self::add('GET', $request, $target);
 	}
 
-	public static function get($request, $target) {
+	public static function get(string $request, $target): Router 
+	{
 		return self::add('GET', $request, $target);
 	}
 
-	public static function post($request, $target) {
+	public static function post(string $request, $target): Router 
+	{
 		return self::add('POST', $request, $target);
 	}
 
-	private static function process($target) {
+	private static function process($target)
+	{
 
-		if (self::isURL($target)) {
+		if (self::isRouteOrURL($target)) {
 
 			/* Transfer variables between local routes */
 			if (self::$params && strpos($target, '/') === 0) {
@@ -91,12 +103,14 @@ class Router {
 		$parts = explode('.', $target);
 		$class = 'Milkshake\Controller\\'.$parts[0];
 		$method = $parts[1];
-	
-		return (new $class())->$method(self::$params);
+
+		$result = (new $class())->$method(self::$params);
+		return $result;
 
 	}
 
-	public static function run() {
+	public static function init(): void
+	{
 
 		$uri = trim($_GET['_uri']);
 		$method = $_SERVER['REQUEST_METHOD'];
@@ -104,7 +118,7 @@ class Router {
 
 		$chunks = explode('/', $uri);
 
-		// Get all route keys where method matches
+		// Get all route keys where method matches request method
 		$keys = array_keys(array_column(self::$routes, 'method'), $method);
 
 		foreach ((array)$keys as $key):

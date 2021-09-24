@@ -2,48 +2,47 @@
 
 namespace Milkshake; 
 
-class Loader {
-
-	private static $locations = [
-    'system/DotEnv.php',
-    'system/Csrf.php',
-    'system/Request.php',
-    'system/Router.php',
-    'system', 
-    'vendor/autoload.php',
-		'model', 
-    'controller', 
-    'routes', 
-	];
-
-	public static function isPHP($file) {
-    return strtolower(substr($file, -4)) === ".php";
-	}
+class Loader 
+{
 	
-	private static function autoload($target) {
+	private static function autoload(string $target): void 
+    {
 
-    if (is_file($target) && self::isPHP($target)) {
-      require_once $target;
-    }
+        if (strtolower(substr($target, -4)) === '.php' && is_file($target)) {
 
-    if (is_dir($target)) {
+            require_once $target;
 
-      $files = glob($target.'/*');
-		
-      foreach($files as $file) {
-        self::autoload($file);
-      }
+        } elseif (is_dir($target)) {
+
+            $files = glob($target.'/*.php');
+            
+            foreach($files as $file) {
+                self::autoload($file);
+            }
+
+        }
 
     }
-		
-  }
 	
-	public static function load() {
+	public static function init(): void
+    {
 
-		foreach (self::$locations as $target) {
+        $locations = [
+            'system/DotEnv.php',
+            'system/Csrf.php',
+            'system/Request.php',
+            'system/Router.php',
+            'system', 
+            'vendor/autoload.php',
+            'model', 
+            'controller', 
+            'routes', 
+        ];
+
+		foreach ($locations as $target) {
 			self::autoload(__DIR__.'/../'.$target);
 		}
-		
+
 	}
 
 }

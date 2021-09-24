@@ -3,20 +3,23 @@
 namespace Milkshake; 
 use Milkshake\Request;
 
-class Model {
+class Model 
+{
 	
 	protected $pdo;
 	public $request;
 	public $validate;
 
-	function __construct() {
+	function __construct() 
+	{
 
 		$this->request = new Request;
 		$this->validate = new Validate;
 
 	}
 	
-	protected function connect() {
+	protected function connect(): \PDO 
+	{
 		
 		$type = getenv('DB_TYPE');
 		$host = getenv('DB_HOST');
@@ -40,48 +43,19 @@ class Model {
 		try { 
 
 			$this->pdo = new \PDO($dsn, $user, $pass, $options); 
+			return $this->pdo;
 
 		} catch (\PDOException $e) { 
+
 			throw new \Exception($e->getMessage()); 
-		}
 
-		return $this->pdo;
+		}
 		
 	}
 
-	protected function disconnect() {
+	protected function disconnect(): void 
+	{
 		$this->pdo = null;
-	}
-
-	public function return($status, $message = '') {
-		return (object)[
-			'status' => $status,
-			'message' => $message,
-		];
-	}
-
-	public function require($fields) {
-		
-		$status = true;
-		$data = [];
-
-		foreach ($fields as $name => $validator) {
-
-			$value = $this->request->get($name);
-
-			if ($this->validate->{$validator}($value)) {
-
-				$data[$name] = $value;
-				continue;
-
-			} 
-
-			$status = false;
-
-		}
-
-		return ($status) ? (object)$data : false;
-
 	}
 
 }
